@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1d4ed8" />
+  <link rel="manifest" href="manifest.json">
+  <title>Fut Análise BR</title>
+  <script>
+    const apiKey = 'c2121718bc706fd719ce1995838e6f00';
+    const apiUrl = 'https://v3.football.api-sports.io';async function buscarTimes(leagueId, season) {
+  const response = await fetch(`${apiUrl}/teams?league=${leagueId}&season=${season}`, {
+    headers: {
+      'x-apisports-key': apiKey
+    }
+  });
+  const data = await response.json();
+  const lista = document.getElementById('resultado');
+  lista.innerHTML = '';
+  data.response.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item.team.name;
+    lista.appendChild(li);
+  });
+}
+
+function carregarDados() {
+  const serie = document.getElementById('serie').value;
+  const ano = document.getElementById('ano').value;
+  const liga = serie === 'A' ? 71 : 72;
+  buscarTimes(liga, ano);
+}
+
+  </script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f0f4f8; }
+    h1 { color: #1d4ed8; }
+    select, button { padding: 10px; margin: 5px 0; }
+    ul { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Fut Análise BR</h1>
+  <label for="serie">Série:</label>
+  <select id="serie">
+    <option value="A">Série A</option>
+    <option value="B">Série B</option>
+  </select><label for="ano">Ano:</label> <select id="ano"> <option value="2024">2024</option> <option value="2023">2023</option> </select>
+
+<button onclick="carregarDados()">Buscar Times</button>
+
+  <ul id="resultado"></ul>
+</body>
+</html>
